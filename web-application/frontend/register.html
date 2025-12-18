@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | Магазин товаров</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-auth-mode="register">
+    <header class="header">
+        <div class="container">
+            <h1 class="header-title">Магазин товаров</h1>
+            <nav class="header-nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Главная</a></li>
+                    <li><a href="catalog.html" class="nav-link">Каталог</a></li>
+                    <li><a href="shops.html" class="nav-link">Магазины</a></li>
+                    <li><a href="contacts.html" class="nav-link">Контакты</a></li>
+                    <li id="nav-cabinet"><a href="dashboard.html" class="nav-link">Личный кабинет</a></li>
+                    <li id="nav-auth"><a href="login.html" class="nav-link">Вход / Регистрация</a></li>
+                    <li id="nav-logout" class="hidden"><a href="#" id="logoutLink" class="nav-link">Выйти</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container" style="max-width: 520px;">
+            <section class="auth-card">
+                <h2 class="section-title" style="text-align: center;">Регистрация</h2>
+                <p style="text-align: center; color: #666; margin-top: -10px; margin-bottom: 20px;">
+                    Создайте аккаунт, чтобы оставлять отзывы и использовать кабинет
+                </p>
+                <form id="authForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="authName">Имя</label>
+                        <input type="text" id="authName" required placeholder="Ваше имя">
+                    </div>
+                    <div class="form-group">
+                        <label for="authEmail">Email</label>
+                        <input type="email" id="authEmail" required placeholder="you@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="authPassword">Пароль</label>
+                        <input type="password" id="authPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Зарегистрироваться</button>
+                    <p style="text-align: center; margin-top: 12px;">
+                        Уже есть аккаунт? <a href="login.html">Войдите</a>
+                    </p>
+                    <div id="authMessage" class="auth-message" aria-live="polite"></div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Магазин товаров. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="js/user-storage.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/nav-auth.js"></script>
+    <script src="js/auth-page.js"></script>
+</body>
+</html>
+

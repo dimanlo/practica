@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранное | Магазин товаров</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-mode="favorites">
+    <header class="header">
+        <div class="container">
+            <h1 class="header-title">Магазин товаров</h1>
+            <nav class="header-nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Главная</a></li>
+                    <li><a href="catalog.html" class="nav-link">Каталог</a></li>
+                    <li><a href="shops.html" class="nav-link">Магазины</a></li>
+                    <li><a href="contacts.html" class="nav-link">Контакты</a></li>
+                    <li><a href="cart.html" class="nav-link">Корзина <span id="cartCount" class="nav-badge hidden">0</span></a></li>
+                    <li><a href="favorites.html" class="nav-link active">Избранное <span id="favCount" class="nav-badge hidden">0</span></a></li>
+                    <li id="nav-cabinet"><a href="dashboard.html" class="nav-link">Личный кабинет</a></li>
+                    <li id="nav-auth"><a href="login.html" class="nav-link">Вход / Регистрация</a></li>
+                    <li id="nav-logout" class="hidden"><a href="#" id="logoutLink" class="nav-link">Выйти</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="dashboard-section">
+                <h2 class="section-title">Избранное</h2>
+                <div id="listContainer" class="products-grid"></div>
+                <div id="emptyState" class="error-message" style="display:none;">Избранное пусто</div>
+                <div style="margin-top:1rem; display:flex; gap:10px; flex-wrap:wrap;">
+                    <button class="btn btn-primary" id="clearBtn">Очистить избранное</button>
+                    <a href="catalog.html" class="btn btn-primary">В каталог</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Магазин товаров. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="js/user-storage.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/nav-auth.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>
+

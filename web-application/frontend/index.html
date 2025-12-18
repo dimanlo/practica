@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин товаров</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="index-page">
+    <header class="header">
+        <div class="container">
+            <h1 class="header-title">Магазин товаров</h1>
+            <nav class="header-nav">
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-link active">Главная</a></li>
+                    <li><a href="catalog.html" class="nav-link">Каталог</a></li>
+                    <li><a href="shops.html" class="nav-link">Магазины</a></li>
+                    <li><a href="contacts.html" class="nav-link">Контакты</a></li>
+                    <li><a href="cart.html" class="nav-link">Корзина <span id="cartCount" class="nav-badge hidden">0</span></a></li>
+                    <li><a href="favorites.html" class="nav-link">Избранное <span id="favCount" class="nav-badge hidden">0</span></a></li>
+                    <li id="nav-cabinet"><a href="dashboard.html" class="nav-link">Личный кабинет</a></li>
+                    <li id="nav-auth"><a href="login.html" class="nav-link">Вход / Регистрация</a></li>
+                    <li id="nav-logout" class="hidden"><a href="#" id="logoutLink" class="nav-link">Выйти</a></li>
+                    <li><button id="themeToggle" class="theme-toggle">🌙 Тема</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="hero">
+                <h2 class="hero-title">Добро пожаловать в наш магазин!</h2>
+                <p class="hero-description">Здесь вы найдете лучшие товары по отличным ценам</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn btn-primary hero-btn" id="scrollToProducts">Посмотреть товары</button>
+                    <a href="catalog.html" class="btn btn-primary hero-btn">Перейти в каталог</a>
+                    <button class="btn btn-primary hero-btn" id="soundBtn">Включить звук</button>
+                </div>
+            </section>
+
+            <section class="products-section">
+                <h2 class="section-title">Популярные товары</h2>
+                <div class="products-carousel-container">
+                    <button class="carousel-btn carousel-btn-prev" id="carouselPrev">‹</button>
+                    <div class="products-carousel" id="productsContainer">
+                        <div class="product-card skeleton">
+                            <div class="skeleton-image"></div>
+                            <div class="skeleton-text"></div>
+                            <div class="skeleton-text short"></div>
+                        </div>
+                        <div class="product-card skeleton">
+                            <div class="skeleton-image"></div>
+                            <div class="skeleton-text"></div>
+                            <div class="skeleton-text short"></div>
+                        </div>
+                        <div class="product-card skeleton">
+                            <div class="skeleton-image"></div>
+                            <div class="skeleton-text"></div>
+                            <div class="skeleton-text short"></div>
+                        </div>
+                    </div>
+                    <button class="carousel-btn carousel-btn-next" id="carouselNext">›</button>
+                </div>
+                <div class="carousel-indicators" id="carouselIndicators"></div>
+            </section>
+
+            <section class="map-section">
+                <h2 class="section-title">Где нас найти</h2>
+                <div id="map"></div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Магазин товаров. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Модальное окно входа -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="loginModal">&times;</span>
+            <h2>Вход</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно регистрации -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="registerModal">&times;</span>
+            <h2>Регистрация</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Имя:</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email:</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Пароль:</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <audio id="soundAudio" src="mp3/Молитва_Трисвятое_вечерняя_читают_схиархимандрид_Илий_Ноздрин_и.mp3" preload="auto"></audio>
+    <script src="js/user-storage.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/nav-auth.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

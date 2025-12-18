@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наши магазины</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .shops-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .shops-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .shops-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .shop-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .shop-item:last-child {
+            border-bottom: none;
+        }
+        
+        .shop-item:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+        }
+        
+        .shop-item.active {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+        }
+        
+        .shop-item h3 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .shop-item p {
+            margin: 0.3rem 0;
+            color: #666;
+        }
+        
+        .shop-item .shop-phone {
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .shop-item .shop-coords {
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
+        .map-container {
+            position: sticky;
+            top: 100px;
+            height: 600px;
+        }
+        
+        #shopsMap {
+            height: 100%;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .shops-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .map-container {
+                position: relative;
+                top: 0;
+                height: 400px;
+            }
+            
+            .shops-list {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="header-title">Магазин товаров</h1>
+            <nav class="header-nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Главная</a></li>
+                    <li><a href="catalog.html" class="nav-link">Каталог</a></li>
+                    <li><a href="shops.html" class="nav-link active">Магазины</a></li>
+                    <li><a href="contacts.html" class="nav-link">Контакты</a></li>
+                    <li><a href="cart.html" class="nav-link">Корзина <span id="cartCount" class="nav-badge hidden">0</span></a></li>
+                    <li><a href="favorites.html" class="nav-link">Избранное <span id="favCount" class="nav-badge hidden">0</span></a></li>
+                    <li id="nav-cabinet"><a href="dashboard.html" class="nav-link">Личный кабинет</a></li>
+                    <li id="nav-auth"><a href="login.html" class="nav-link">Вход / Регистрация</a></li>
+                    <li id="nav-logout" class="hidden"><a href="#" id="logoutLink" class="nav-link">Выйти</a></li>
+                    <li><button id="themeToggle" class="theme-toggle">🌙 Тема</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="shops-header">
+            <div class="container">
+                <h2 class="section-title" style="color: white; margin-bottom: 0;">Наши магазины</h2>
+                <p style="text-align: center; margin-top: 0.5rem; opacity: 0.9;">Найдите ближайший магазин на карте</p>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="shops-content">
+                <div class="shops-list" id="shopsList">
+                    <div style="margin-bottom:1rem; display:flex; gap:8px; flex-wrap:wrap;">
+                        <button class="btn btn-primary btn-small" id="btnNearestShop">Ближайший магазин</button>
+                    </div>
+                    <div class="loading">Загрузка магазинов...</div>
+                </div>
+                
+                <div class="map-container">
+                    <div id="shopsMap"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Магазин товаров. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Модальные окна авторизации -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="loginModal">&times;</span>
+            <h2>Вход</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="registerModal">&times;</span>
+            <h2>Регистрация</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Имя:</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email:</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Пароль:</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="js/user-storage.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/nav-auth.js"></script>
+    <script src="js/shops.js"></script>
+</body>
+</html>
+

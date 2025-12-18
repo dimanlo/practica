@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chart.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="header-title" style="white-space: nowrap;">Личный кабинет</h1>
+            <nav class="header-nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Главная</a></li>
+                    <li><a href="catalog.html" class="nav-link">Каталог</a></li>
+                    <li><a href="shops.html" class="nav-link">Магазины</a></li>
+                    <li><a href="contacts.html" class="nav-link">Контакты</a></li>
+                    <li><a href="cart.html" class="nav-link">Корзина <span id="cartCount" class="nav-badge hidden">0</span></a></li>
+                    <li><a href="favorites.html" class="nav-link">Избранное <span id="favCount" class="nav-badge hidden">0</span></a></li>
+                    <li id="nav-cabinet"><a href="#" class="nav-link active">Личный кабинет</a></li>
+                    <li id="nav-auth"><a href="login.html" class="nav-link">Вход / Регистрация</a></li>
+                    <li id="nav-logout" class="hidden"><a href="#" id="logoutLink" class="nav-link">Выйти</a></li>
+                    <li><button id="themeToggle" class="theme-toggle">🌙 Тема</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="dashboard-section">
+                <h2 class="section-title">Профиль</h2>
+                <div class="profile-card">
+                    <div class="profile-meta">
+                        <p><strong>Имя:</strong> <span id="profileName">—</span></p>
+                        <p><strong>Email:</strong> <span id="profileEmail">—</span></p>
+                    </div>
+                    <div>
+                        <a href="login.html" class="btn btn-primary" id="logoutBtn">Выйти</a>
+                    </div>
+                </div>
+            </section>
+            <section class="dashboard-section">
+                <h2 class="section-title">Статистика</h2>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3>Распределение оценок</h3>
+                        <canvas id="starsChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Отзывы по месяцам</h3>
+                        <canvas id="reviewsChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-section">
+                <h2 class="section-title">Мои отзывы</h2>
+                <div class="filters">
+                    <select id="reviewsFilter">
+                        <option value="all">Все отзывы</option>
+                        <option value="5">5 звезд</option>
+                        <option value="4">4 звезды</option>
+                        <option value="3">3 звезды</option>
+                        <option value="2">2 звезды</option>
+                        <option value="1">1 звезда</option>
+                    </select>
+                    <select id="reviewsSort">
+                        <option value="date-desc">Дата (новые)</option>
+                        <option value="date-asc">Дата (старые)</option>
+                        <option value="stars-desc">Оценка (высокая)</option>
+                        <option value="stars-asc">Оценка (низкая)</option>
+                        <option value="product-asc">Товар (А-Я)</option>
+                        <option value="product-desc">Товар (Я-А)</option>
+                    </select>
+                    <input type="text" id="reviewsSearch" placeholder="Поиск по отзывам...">
+                </div>
+                <div class="reviews-table-container">
+                    <table class="reviews-table">
+                        <thead>
+                            <tr>
+                                <th>Товар</th>
+                                <th>Отзыв</th>
+                                <th>Оценка</th>
+                                <th>Дата</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reviewsTableBody">
+                            <tr>
+                                <td colspan="5" class="loading">Загрузка отзывов...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Модальное окно для редактирования отзыва -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Редактировать отзыв</h2>
+            <form id="editReviewForm">
+                <input type="hidden" id="editReviewId">
+                <div class="form-group">
+                    <label for="editReviewText">Отзыв:</label>
+                    <textarea id="editReviewText" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editReviewStars">Оценка:</label>
+                    <select id="editReviewStars" required>
+                        <option value="1">1 звезда</option>
+                        <option value="2">2 звезды</option>
+                        <option value="3">3 звезды</option>
+                        <option value="4">4 звезды</option>
+                        <option value="5">5 звезд</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Магазин товаров. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Модальные окна авторизации -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="loginModal">&times;</span>
+            <h2>Вход</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="registerModal">&times;</span>
+            <h2>Регистрация</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Имя:</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email:</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Пароль:</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/user-storage.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/nav-auth.js"></script>
+    <script src="js/dashboard.js" type="module"></script>
+</body>
+</html>

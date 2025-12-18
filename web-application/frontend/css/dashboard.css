@@ -1,0 +1,276 @@
+.dashboard-section {
+    margin-bottom: 3rem;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.chart-container {
+    position: relative;
+    height: 400px;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 2rem 1rem 1rem 1rem;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-container canvas {
+    max-width: 100% !important;
+    max-height: calc(100% - 3rem) !important;
+    margin-top: 0.5rem;
+}
+
+.filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+#reviewsFilter, #reviewsSearch, #reviewsSort {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+#reviewsFilter, #reviewsSort {
+    background: white;
+}
+
+#reviewsSearch {
+    flex: 1;
+    min-width: 200px;
+}
+
+.reviews-table-container, .orders-table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.reviews-table, .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.reviews-table th, .reviews-table td,
+.orders-table th, .orders-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.reviews-table th, .orders-table th {
+    background: #f8f9fa;
+    font-weight: bold;
+    color: #333;
+}
+
+.reviews-table tr:hover, .orders-table tr:hover {
+    background: #f8f9fa;
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+.stars-rating {
+    color: #ffc107;
+    font-size: 1.2rem;
+}
+
+.btn-edit {
+    background-color: #667eea;
+    color: white;
+    margin-right: 0.5rem;
+}
+
+.btn-edit:hover {
+    background-color: #5568d3;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 2rem;
+    border: 1px solid #888;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    animation: slideInFromTop 0.3s ease-out;
+    position: relative;
+}
+
+@keyframes slideInFromTop {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    z-index: 2000;
+    opacity: 0;
+    transform: translateX(400px);
+    transition: all 0.3s ease-out;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification-success {
+    background-color: #27ae60;
+}
+
+.notification-error {
+    background-color: #e74c3c;
+}
+
+.notification-info {
+    background-color: #3498db;
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        height: 300px;
+    }
+    
+    .filters {
+        flex-direction: column;
+    }
+    
+    #reviewsSearch {
+        min-width: auto;
+    }
+    
+    .reviews-table th, .reviews-table td,
+    .orders-table th, .orders-table td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart-container {
+        height: 250px;
+    }
+    
+    .reviews-table th, .reviews-table td,
+    .orders-table th, .orders-table td {
+        padding: 0.3rem;
+        font-size: 0.8rem;
+    }
+    
+    .reviews-table th:nth-child(2),
+    .reviews-table td:nth-child(2) {
+        display: none;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 20% auto;
+        padding: 1.5rem;
+    }
+    
+    .btn-edit,
+    .btn-delete {
+        display: block;
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+}

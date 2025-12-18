@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог товаров</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .catalog-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .catalog-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .catalog-filters input,
+        .catalog-filters select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        
+        .catalog-search {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .catalog-sort {
+            min-width: 200px;
+        }
+        
+        .catalog-category {
+            min-width: 150px;
+        }
+        
+        .products-grid-catalog {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .catalog-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .catalog-stats span {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .catalog-filters {
+                flex-direction: column;
+            }
+            
+            .catalog-search,
+            .catalog-sort,
+            .catalog-category {
+                width: 100%;
+            }
+            
+            .products-grid-catalog {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        /* Buttons in product cards */
+        .product-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .product-actions .btn {
+            width: 100%;
+            text-align: center;
+            padding: 10px 12px;
+        }
+    </style>
+    <style>
+        /* Quick view modal tweaks */
+        #quickViewBody {
+            display: grid;
+            gap: 1.25rem;
+        }
+        #quickViewBody .product-detail-container {
+            grid-template-columns: minmax(280px, 1fr) 1.1fr;
+            align-items: start;
+        }
+        #quickViewBody img.product-detail-image {
+            width: 100%;
+            height: 320px;
+            object-fit: contain;
+            background: #f7f7f7;
+            border-radius: 12px;
+        }
+        @media (max-width: 900px) {
+            #quickViewBody .product-detail-container {
+                grid-template-columns: 1fr;
+            }
+            #quickViewBody img.product-detail-image {
+                height: 240px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="header-title">Магазин товаров</h1>
+            <nav class="header-nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Главная</a></li>
+                    <li><a href="catalog.html" class="nav-link active">Каталог</a></li>
+                    <li><a href="shops.html" class="nav-link">Магазины</a></li>
+                    <li><a href="contacts.html" class="nav-link">Контакты</a></li>
+                    <li><a href="cart.html" class="nav-link">Корзина <span id="cartCount" class="nav-badge hidden">0</span></a></li>
+                    <li><a href="favorites.html" class="nav-link">Избранное <span id="favCount" class="nav-badge hidden">0</span></a></li>
+                    <li id="nav-cabinet"><a href="dashboard.html" class="nav-link">Личный кабинет</a></li>
+                    <li id="nav-auth"><a href="login.html" class="nav-link">Вход / Регистрация</a></li>
+                    <li id="nav-logout" class="hidden"><a href="#" id="logoutLink" class="nav-link">Выйти</a></li>
+                    <li><button id="themeToggle" class="theme-toggle">🌙 Тема</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="catalog-header">
+            <div class="container">
+                <h2 class="section-title" style="color: white; margin-bottom: 0;">Каталог товаров</h2>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="catalog-filters">
+                <input type="text" id="catalogSearch" class="catalog-search" placeholder="Поиск по названию или описанию...">
+                <select id="catalogCategory" class="catalog-category">
+                    <option value="">Все категории</option>
+                </select>
+                <select id="catalogSort" class="catalog-sort">
+                    <option value="name-asc">Название (А-Я)</option>
+                    <option value="name-desc">Название (Я-А)</option>
+                    <option value="price-asc">Цена (низкая → высокая)</option>
+                    <option value="price-desc">Цена (высокая → низкая)</option>
+                    <option value="newest">Сначала новые</option>
+                    <option value="oldest">Сначала старые</option>
+                </select>
+            </div>
+            
+            <div class="catalog-stats">
+                <span id="catalogStats">Загрузка...</span>
+            </div>
+            
+            <div class="products-grid-catalog" id="catalogProducts">
+                <div class="product-card skeleton">
+                    <div class="skeleton-image"></div>
+                    <div class="skeleton-text"></div>
+                    <div class="skeleton-text short"></div>
+                </div>
+                <div class="product-card skeleton">
+                    <div class="skeleton-image"></div>
+                    <div class="skeleton-text"></div>
+                    <div class="skeleton-text short"></div>
+                </div>
+                <div class="product-card skeleton">
+                    <div class="skeleton-image"></div>
+                    <div class="skeleton-text"></div>
+                    <div class="skeleton-text short"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Магазин товаров. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Модальные окна авторизации -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="loginModal">&times;</span>
+            <h2>Вход</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="registerModal">&times;</span>
+            <h2>Регистрация</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Имя:</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email:</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Пароль:</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/user-storage.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/nav-auth.js"></script>
+    <script src="js/catalog.js"></script>
+
+    <!-- Быстрый просмотр -->
+    <div id="quickViewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="quickViewModal">&times;</span>
+            <div id="quickViewBody"></div>
+        </div>
+    </div>
+</body>
+</html>
+
